@@ -1,0 +1,26 @@
+{
+  "name": "create-rnweb",
+  "version": "1.0.2",
+  "description": "Create a React-Native + React-Native-Web app with Babel and Webpack configured",
+  "main": "index.sh",
+  "scripts": {
+    "start": "bash ./index.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Sharcoux/create-react-native-web-app.git"
+  },
+  "keywords": [
+    "react-native-web",
+    "react-native"
+  ],
+  "author": "fbillioud",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sharcoux/create-react-native-web-app/issues"
+  },
+  "homepage": "https://github.com/Sharcoux/create-react-native-web-app#readme",
+  "bin": {
+    "create-rnweb": "index.sh"
+  }
+}
