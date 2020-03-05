@@ -208,8 +208,14 @@ then
 }' > tsconfig.json
 
   # Install typescript dependencies
-  npm i -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader
+  npm i -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader @typescript-eslint/parser @typescript-eslint/eslint-plugin
 
+  # Update eslint for ts files
+  perl -i -0pe "s#extends: \[(.*?)(\s*)\]#extends: [\$1,
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended'
+  ]#s" ./.eslintrc.js
+  
   # Update webpack config for ts files
   perl -i -0pe "s#rules: \[.*?\]#rules: [
       {
