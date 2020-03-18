@@ -247,6 +247,11 @@ then
       '.jsx',
       '.js'
     ]/s" ./webpack.config.js
+  perl -i -0pe "s#extends: \[(.*?)
+  \]#extends: [\$1,
+    'plugin:\@typescript-eslint/eslint-recommended',
+    'plugin:\@typescript-eslint/recommended',
+  ]#sg" ./.eslintrc.js
 
   # Setup the project for being a module
   read -p "Will this project be imported as a node module? (yN) " isModule
@@ -255,6 +260,14 @@ then
     # Add typescript precompiling
     perl -i -0pe 's/"scripts": \{/"scripts": {
     "prepublish": "tsc",/sg' ./package.json
+
+    # Fix entry point in package.json
+    perl -i -0pe "s#\{(.*)
+\}#{\$1,
+  \"main\": \"src/index.tsx\",
+  \"types\": \"dist/index.d.ts\"
+}#sg" ./package.json
+
     
     # Fix Webpack config
     perl -i -0pe "s/'dist'/'demo'/sg" ./webpack.config.js
@@ -278,8 +291,20 @@ if [ $useJest = 'y' ] || [ $useJest = 'yes' ]
 then
   npm i -D jest babel-jest ts-jest eslint-plugin-jest @types/jest
   mkdir tests
+
+  # Add test script within package.json
   perl -i -0pe 's/"scripts": \{/"scripts": {
     "test": "jest",/sg' ./package.json
+
+  # Fix eslint config
+  perl -i -0pe "s/plugins: \[(.*?)
+  \]/plugins: [\$1,
+    'jest'
+  ]/sg" ./.eslintrc.js
+  perl -i -0pe "s#extends: \[(.*?)
+  \]#extends: [\$1,
+    'plugin:jest/recommended'
+  ]#sg" ./.eslintrc.js
 else
   npm remove jest babel-jest
 fi
