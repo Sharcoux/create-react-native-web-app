@@ -135,8 +135,8 @@ export default App
 rm App.js
 
 # Install typescript if needed
-read -p "Do you intend to use typescript for this project? (yN) " yN
-if [ $yN = 'y' ] || [ $yN = 'yes' ]
+read -p "Do you intend to use typescript for this project? (yN) " useTS
+if [ $useTS = 'y' ] || [ $useTS = 'yes' ]
 then
   # Change for ts files
   mv index.js index.ts
@@ -247,7 +247,43 @@ then
       '.jsx',
       '.js'
     ]/s" ./webpack.config.js
+
+  # Setup the project for being a module
+  read -p "Will this project be imported as a node module? (yN) " isModule
+  if [ $isModule = 'y' ] || [ $isModule = 'yes' ]
+  then
+    # Add typescript precompiling
+    perl -i -0pe 's/"scripts": \{/"scripts": {
+    "prepublish": "tsc",/sg' ./package.json
+    
+    # Fix Webpack config
+    perl -i -0pe "s/'dist'/'demo'/sg" ./webpack.config.js
+
+    # Fix ts config
+    perl -i -0pe 's#// "outDir"#"outDir"#sg' ./tsconfig.json
+    perl -i -0pe 's#// "declaration"#"declaration"#sg' ./tsconfig.json
+    perl -i -0pe "s#\{(.*)\"exclude\"(.*)\}#{\$1\"include\": [\"src/**/*\"],
+  \"exclude\": [\"node_modules\", \"dist\", \"demo\"]
+}#s" ./tsconfig.json
+
+    # Ignore demo folder
+    echo "/demo" >> ./.gitignore
+  fi
+
 fi
+
+# Install jest if needed
+read -p "Do you intend to use jest for this project? (yN) " useJest
+if [ $useJest = 'y' ] || [ $useJest = 'yes' ]
+then
+  npm i -D jest babel-jest ts-jest eslint-plugin-jest @types/jest
+  mkdir tests
+  perl -i -0pe 's/"scripts": \{/"scripts": {
+    "test": "jest",/sg' ./package.json
+else
+  npm remove jest babel-jest
+fi
+rm -rf __tests__
 
 # Setup eslint
 rm .eslintrc.js
