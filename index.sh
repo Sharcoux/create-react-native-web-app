@@ -12,7 +12,8 @@ npx react-native init $name
 cd $name
 
 # Install all dependencies
-npm i -D babel-loader html-loader html-webpack-plugin webpack webpack-cli webpack-dev-server react-dom react-native-web dotenv husky lint-staged
+npm i -S react-native-web react-dom
+npm i -D babel-loader html-loader html-webpack-plugin webpack webpack-cli webpack-dev-server dotenv husky lint-staged
 
 # node dotenv
 echo "NODE_ENV=development" > .env
@@ -280,7 +281,7 @@ then
 }#s" ./tsconfig.json
 
     # Ignore demo folder
-    echo "/demo" >> ./.gitignore
+    echo "demo/" >> ./.gitignore
   fi
 
 fi
@@ -309,6 +310,8 @@ else
   npm remove jest babel-jest
 fi
 rm -rf __tests__
+rm .flowconfig
+rm .prettierrc.js
 
 # Setup eslint
 rm .eslintrc.js
