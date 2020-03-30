@@ -10,6 +10,7 @@ read -p "What is your project package name? " name
 # Init the project
 npx react-native init $name
 cd $name
+git init
 
 # Install all dependencies
 npm i -S react-native-web react-dom
