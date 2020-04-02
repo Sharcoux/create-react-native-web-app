@@ -261,7 +261,7 @@ then
   then
     # Add typescript precompiling
     perl -i -0pe 's/"scripts": \{/"scripts": {
-    "prepublish": "tsc",/sg' ./package.json
+    "prepare": "tsc",/sg' ./package.json
 
     # Fix entry point in package.json
     perl -i -0pe "s#\{(.*)
@@ -285,6 +285,66 @@ then
     echo "demo/" >> ./.gitignore
   fi
 
+fi
+
+# Install storybook if needed
+read -p "Do you intend to use storybook for this project? (yN) " useStorybook
+if [ $useStorybook = 'y' ] || [ $useStorybook = 'yes' ]
+then
+  npm i -D @storybook/react
+  mkdir stories
+  mkdir .storybook
+
+  # Add test script within package.json
+  perl -i -0pe 's/"scripts": \{/"scripts": {
+    "build-storybook": "build-storybook",
+    "storybook": "start-storybook -p 6006",/sg' ./package.json
+
+  # Create the main file
+  if [ $useTS = 'y' ] || [ $useTS = 'yes' ]
+  then
+    # We need to strip typescript off from the files with babel
+    npm i -D @babel/preset-typescript
+
+    # Load the files with babel
+    echo "module.exports = {
+  stories: ['../stories/**/*.stories.js'],
+  webpackFinal: async (config) => {
+
+    // Make whatever fine-grained changes you need
+    config.module.rules.push({
+      test: /\.(tsx|ts|js|jsx)$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+        options: { presets: ['@babel/preset-typescript'] }
+      }
+    });
+    config.resolve.extensions = [
+      '.web.tsx',
+      '.web.ts',
+      '.tsx',
+      '.ts',
+      '.web.jsx',
+      '.web.js',
+      '.jsx',
+      '.js'
+    ]
+    config.resolve.alias = {
+      'react-native$': 'react-native-web'
+    }
+
+    // Return the altered config
+    return config;
+  },
+};
+" > .storybook/main.js
+  else
+    echo "module.exports = {
+  stories: ['../stories/**/*.stories.js']
+}
+" > .storybook/main.js
+  fi
 fi
 
 # Install jest if needed
