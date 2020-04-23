@@ -136,6 +136,10 @@ export default App
 " > src/index.js
 rm App.js
 
+# Setup eslint
+rm .eslintrc.js
+npx eslint --init
+
 # Install typescript if needed
 read -p "Do you intend to use typescript for this project? (yN) " useTS
 if [ $useTS = 'y' ] || [ $useTS = 'yes' ]
@@ -213,11 +217,12 @@ then
   npm i -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader @typescript-eslint/parser @typescript-eslint/eslint-plugin
 
   # Update eslint for ts files
-  perl -i -0pe "s#extends: \[(.*?)(\s*)\]#extends: [\$1,
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended'
-  ]#s" ./.eslintrc.js
-  
+  perl -i -0pe "s#extends: \[(.*?)
+  \]#extends: [\$1,
+    'plugin:\@typescript-eslint/eslint-recommended',
+    'plugin:\@typescript-eslint/recommended'
+  ]#sg" ./.eslintrc.js
+    
   # Update webpack config for ts files
   perl -i -0pe "s#rules: \[.*?\]#rules: [
       {
@@ -249,11 +254,6 @@ then
       '.jsx',
       '.js'
     ]/s" ./webpack.config.js
-  perl -i -0pe "s#extends: \[(.*?)
-  \]#extends: [\$1,
-    'plugin:\@typescript-eslint/eslint-recommended',
-    'plugin:\@typescript-eslint/recommended',
-  ]#sg" ./.eslintrc.js
 
   # Setup the project for being a module
   read -p "Will this project be imported as a node module? (yN) " isModule
@@ -373,7 +373,3 @@ fi
 rm -rf __tests__
 rm .flowconfig
 rm .prettierrc.js
-
-# Setup eslint
-rm .eslintrc.js
-npx eslint --init
