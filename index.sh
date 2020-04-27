@@ -136,10 +136,6 @@ export default App
 " > src/index.js
 rm App.js
 
-# Setup eslint
-rm .eslintrc.js
-npx eslint --init
-
 # Install typescript if needed
 read -p "Do you intend to use typescript for this project? (yN) " useTS
 if [ $useTS = 'y' ] || [ $useTS = 'yes' ]
@@ -216,13 +212,6 @@ then
   # Install typescript dependencies
   npm i -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader @typescript-eslint/parser @typescript-eslint/eslint-plugin
 
-  # Update eslint for ts files
-  perl -i -0pe "s#extends: \[(.*?)
-  \]#extends: [\$1,
-    'plugin:\@typescript-eslint/eslint-recommended',
-    'plugin:\@typescript-eslint/recommended'
-  ]#sg" ./.eslintrc.js
-    
   # Update webpack config for ts files
   perl -i -0pe "s#rules: \[.*?\]#rules: [
       {
@@ -357,8 +346,17 @@ then
   # Add test script within package.json
   perl -i -0pe 's/"scripts": \{/"scripts": {
     "test": "jest",/sg' ./package.json
+else
+  npm remove jest babel-jest
+fi
 
-  # Fix eslint config
+# Setup eslint
+rm .eslintrc.js
+npx eslint --init
+
+# Add jest to eslint
+if [ $useJest = 'y' ] || [ $useJest = 'yes' ]
+then
   perl -i -0pe "s/plugins: \[(.*?)
   \]/plugins: [\$1,
     'jest'
@@ -367,9 +365,20 @@ then
   \]#extends: [\$1,
     'plugin:jest/recommended'
   ]#sg" ./.eslintrc.js
-else
-  npm remove jest babel-jest
 fi
+
+# Add typescript to eslint
+if [ $useTS = 'y' ] || [ $useTS = 'yes' ]
+then
+  # Update eslint for ts files
+  perl -i -0pe "s#extends: \[(.*?)
+  \]#extends: [\$1,
+    'plugin:\@typescript-eslint/eslint-recommended',
+    'plugin:\@typescript-eslint/recommended'
+  ]#sg" ./.eslintrc.js
+fi    
+
+
 rm -rf __tests__
 rm .flowconfig
 rm .prettierrc.js
