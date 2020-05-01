@@ -245,6 +245,13 @@ then
       '.js'
     ]/s" ./webpack.config.js
 
+  # Remove some rules from eslint
+  perl -i -0pe "s#rules: \{(.*?)
+  \}#rules: {
+    '\@typescript-eslint/no-use-before-define': 'off',
+    '\@typescript-eslint/explicit-function-return-type': 'off'
+  }#sg" ./.eslintrc.js
+
   # Setup the project for being a module
   read -p "Will this project be imported as a node module? (yN) " isModule
   if [ $isModule = 'y' ] || [ $isModule = 'yes' ]
