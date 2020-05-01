@@ -213,6 +213,7 @@ then
   npm i -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader @typescript-eslint/parser @typescript-eslint/eslint-plugin
 
   # Update webpack config for ts files
+  echo -e "/* eslint-disable @typescript-eslint/no-var-requires */\n$(cat webpack.config.js)" > ./webpack.config.js
   perl -i -0pe "s#rules: \[.*?\]#rules: [
       {
         test: /\\\.(tsx|ts|jsx|js|mjs)\\$/,
