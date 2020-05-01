@@ -1,6 +1,6 @@
 {
   "name": "create-rnweb",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Create a React-Native + React-Native-Web app with Babel and Webpack configured",
   "main": "index.sh",
   "scripts": {
