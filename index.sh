@@ -49,16 +49,6 @@ perl -i -0pe 's/"scripts": \{.*?\}/"scripts": {
     "web": "webpack-dev-server --open --mode development"
   }/sg' ./package.json
 
-# Add husky and lint-staged to run eslint
-perl -i -0pe 's/"jest": \{.*?\}/"husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js?(x)": ["eslint . --fix", "git add"]
-  }/s' ./package.json
-
 # Webpack configuration
 echo "const HtmlWebPackPlugin = require('html-webpack-plugin')
 const path = require('path')
@@ -256,7 +246,7 @@ then
     # Fix entry point in package.json
     perl -i -0pe "s#\{(.*)
 \}#{\$1,
-  \"main\": \"src/index.tsx\",
+  \"main\": \"dist/index.js\",
   \"types\": \"dist/index.d.ts\"
 }#sg" ./package.json
 
@@ -276,6 +266,18 @@ then
   fi
 
 fi
+
+# Add husky and lint-staged to run eslint
+perl -i -0pe 's/"jest": \{.*?\}/"husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.[tj]s?(x)": ["eslint . --fix", "git add"]
+  }/s' ./package.json
+
+
 
 # Install storybook if needed
 read -p "Do you intend to use storybook for this project? (yN) " useStorybook
