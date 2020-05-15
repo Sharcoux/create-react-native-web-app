@@ -274,7 +274,7 @@ perl -i -0pe 's/"jest": \{.*?\}/"husky": {
     }
   },
   "lint-staged": {
-    "*.[tj]s?(x)": ["eslint . --fix", "git add"]
+    "*.js?(x)": ["eslint . --fix", "git add"]
   }/s' ./package.json
 
 
@@ -385,7 +385,14 @@ then
     '\@typescript-eslint/no-use-before-define': 'off',
     '\@typescript-eslint/explicit-function-return-type': 'off'
   }#sg" ./.eslintrc.js
-fi    
+
+  # Add typescript check on commit
+  perl -i -0pe 's/"pre-commit": "lint-staged"/"pre-commit": "tsc --noEmit && lint-staged"/' ./package.json
+
+  # Check ts files with lint-staged
+  perl -i -0pe 's/\Q"*.js?(x)"\E/"*.[tj]s?(x)"/' ./package.json
+  
+fi
 
 
 rm -rf __tests__
