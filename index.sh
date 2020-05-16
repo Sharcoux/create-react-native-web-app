@@ -375,7 +375,8 @@ if [ "$useTS" = 'y' ] || [ "$useTS" = 'yes' ]
 then
   # Update eslint for ts files
   perl -i -0pe "s#extends: \[(.*?)
-  \]#extends: [\$1,
+  \]#ignorePatterns: ['dist'],
+  extends: [\$1,
     'plugin:\@typescript-eslint/eslint-recommended',
     'plugin:\@typescript-eslint/recommended'
   ]#sg" ./.eslintrc.js
