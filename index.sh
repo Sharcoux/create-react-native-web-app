@@ -128,7 +128,7 @@ rm App.js
 
 # Install typescript if needed
 read -p "Do you intend to use typescript for this project? (yN) " useTS
-if [ $useTS = 'y' ] || [ $useTS = 'yes' ]
+if [ "$useTS" = 'y' ] || [ "$useTS" = 'yes' ]
 then
   # Change for ts files
   mv index.js index.ts
@@ -237,7 +237,7 @@ then
 
   # Setup the project for being a module
   read -p "Will this project be imported as a node module? (yN) " isModule
-  if [ $isModule = 'y' ] || [ $isModule = 'yes' ]
+  if [ "$isModule" = 'y' ] || [ "$isModule" = 'yes' ]
   then
     # Add typescript precompiling
     perl -i -0pe 's/"scripts": \{/"scripts": {
@@ -281,7 +281,7 @@ perl -i -0pe 's/"jest": \{.*?\}/"husky": {
 
 # Install storybook if needed
 read -p "Do you intend to use storybook for this project? (yN) " useStorybook
-if [ $useStorybook = 'y' ] || [ $useStorybook = 'yes' ]
+if [ "$useStorybook" = 'y' ] || [ "$useStorybook" = 'yes' ]
 then
   npm i -D @storybook/react
   mkdir stories
@@ -293,7 +293,7 @@ then
     "storybook": "start-storybook -p 6006",/sg' ./package.json
 
   # Create the main file
-  if [ $useTS = 'y' ] || [ $useTS = 'yes' ]
+  if [ "$useTS" = 'y' ] || [ "$useTS" = 'yes' ]
   then
     # We need to strip typescript off from the files with babel
     npm i -D @babel/preset-typescript
@@ -341,7 +341,7 @@ fi
 
 # Install jest if needed
 read -p "Do you intend to use jest for this project? (yN) " useJest
-if [ $useJest = 'y' ] || [ $useJest = 'yes' ]
+if [ "$useJest" = 'y' ] || [ "$useJest" = 'yes' ]
 then
   npm i -D jest babel-jest ts-jest eslint-plugin-jest @types/jest
   mkdir tests
@@ -358,7 +358,7 @@ rm .eslintrc.js
 npx eslint --init
 
 # Add jest to eslint
-if [ $useJest = 'y' ] || [ $useJest = 'yes' ]
+if [ "$useJest" = 'y' ] || [ "$useJest" = 'yes' ]
 then
   perl -i -0pe "s/plugins: \[(.*?)
   \]/plugins: [\$1,
@@ -371,7 +371,7 @@ then
 fi
 
 # Add typescript to eslint
-if [ $useTS = 'y' ] || [ $useTS = 'yes' ]
+if [ "$useTS" = 'y' ] || [ "$useTS" = 'yes' ]
 then
   # Update eslint for ts files
   perl -i -0pe "s#extends: \[(.*?)
