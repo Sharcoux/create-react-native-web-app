@@ -368,6 +368,12 @@ then
   \]#extends: [\$1,
     'plugin:jest/recommended'
   ]#sg" ./.eslintrc.js
+
+  # Add jest to package.json
+  perl -i -0pe "s/{(.*),/{\$1,
+  \"jest\": {
+    \"preset\": \"react-native\"
+  },/sg" ./package.json
 fi
 
 # Add typescript to eslint
@@ -385,6 +391,7 @@ then
   \}#rules: {
     '\@typescript-eslint/no-use-before-define': 'off',
     '\@typescript-eslint/explicit-function-return-type': 'off'
+    'linebreak-style': ['error', 'unix']
   }#sg" ./.eslintrc.js
 
   # Add typescript check on commit
@@ -392,8 +399,13 @@ then
 
   # Check ts files with lint-staged
   perl -i -0pe 's/\Q"*.js?(x)"\E/"*.[tj]s?(x)"/' ./package.json
-  
 fi
+
+# Add some rule to eslintrc
+perl -i -0pe "s#rules: \{(.*?)
+  \}#rules: {\$1,
+    'linebreak-style': ['error', 'unix']
+  }#sg" ./.eslintrc.js
 
 
 rm -rf __tests__
