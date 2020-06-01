@@ -263,6 +263,9 @@ then
 
     # Ignore demo folder
     echo "demo/" >> ./.gitignore
+
+    # Fix eslint config
+    perl -i -0pe "s/ignorePatterns: \[/ignorePatterns: \['demo' ,/s" ./.eslintrc.js
   fi
 
 fi
