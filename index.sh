@@ -375,7 +375,7 @@ then
   # Add jest to package.json
   perl -i -0pe "s/{(.*),/{\$1,
   \"jest\": {
-    \"preset\": \"react-native\"
+    \"preset\": \"react-native-web\"
   },/sg" ./package.json
 fi
 
