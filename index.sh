@@ -394,7 +394,6 @@ then
   \}#rules: {
     '\@typescript-eslint/no-use-before-define': 'off',
     '\@typescript-eslint/explicit-function-return-type': 'off'
-    'linebreak-style': ['error', 'unix']
   }#sg" ./.eslintrc.js
 
   # Add typescript check on commit
