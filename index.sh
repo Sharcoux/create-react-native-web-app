@@ -409,7 +409,6 @@ perl -i -0pe "s#rules: \{(.*?)
     'linebreak-style': ['error', 'unix']
   }#sg" ./.eslintrc.js
 
-
 rm -rf __tests__
 rm .flowconfig
 rm .prettierrc.js
