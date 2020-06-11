@@ -393,7 +393,8 @@ then
   perl -i -0pe "s#rules: \{(.*?)
   \}#rules: {
     '\@typescript-eslint/no-use-before-define': 'off',
-    '\@typescript-eslint/explicit-function-return-type': 'off'
+    '\@typescript-eslint/explicit-function-return-type': 'off',
+    '\@typescript-eslint/explicit-module-boundary-types': 'off'
   }#sg" ./.eslintrc.js
 
   # Add typescript check on commit
