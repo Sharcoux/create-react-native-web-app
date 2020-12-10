@@ -14,7 +14,7 @@ git init
 
 # Install all dependencies
 npm i -S react-native-web react-dom
-npm i -D eslint babel-loader html-loader html-webpack-plugin webpack webpack-cli webpack-dev-server dotenv husky lint-staged
+npm i -D babel-loader html-loader html-webpack-plugin webpack webpack-cli webpack-dev-server dotenv husky lint-staged
 
 # node dotenv
 echo "NODE_ENV=development" > .env
@@ -263,9 +263,6 @@ then
 
     # Ignore demo folder
     echo "demo/" >> ./.gitignore
-
-    # Fix eslint config
-    perl -i -0pe "s/ignorePatterns: \[/ignorePatterns: \['demo' ,/s" ./.eslintrc.js
   fi
 
 fi
@@ -357,6 +354,7 @@ else
 fi
 
 # Setup eslint
+npm i -D eslint@latest
 rm .eslintrc.js
 npx eslint --init
 
@@ -392,7 +390,8 @@ then
   # Remove some rules from eslint
   perl -i -0pe "s#rules: \{(.*?)
   \}#rules: {
-    '\@typescript-eslint/no-use-before-define': 'off',
+    'no-use-before-define': 'off',
+    '\@typescript-eslint/no-use-before-define': ['error'],
     '\@typescript-eslint/explicit-function-return-type': 'off',
     '\@typescript-eslint/explicit-module-boundary-types': 'off'
   }#sg" ./.eslintrc.js
