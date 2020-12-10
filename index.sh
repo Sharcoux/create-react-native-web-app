@@ -14,7 +14,7 @@ git init
 
 # Install all dependencies
 npm i -S react-native-web react-dom
-npm i -D babel-loader html-loader html-webpack-plugin webpack webpack-cli webpack-dev-server dotenv husky lint-staged
+npm i -D eslint babel-loader html-loader html-webpack-plugin webpack webpack-cli webpack-dev-server dotenv husky lint-staged
 
 # node dotenv
 echo "NODE_ENV=development" > .env
@@ -402,6 +402,13 @@ then
 
   # Check ts files with lint-staged
   perl -i -0pe 's/\Q"*.js?(x)"\E/"*.[tj]s?(x)"/' ./package.json
+
+  if [ "$isModule" = 'y' ] || [ "$isModule" = 'yes' ]
+  then
+      # Fix eslint config
+      perl -i -0pe "s/ignorePatterns: \[/ignorePatterns: \['demo' ,/s" ./.eslintrc.js
+  fi
+
 fi
 
 # Add some rule to eslintrc
