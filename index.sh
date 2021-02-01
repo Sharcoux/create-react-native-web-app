@@ -46,7 +46,7 @@ perl -i -0pe 's/"scripts": \{.*?\}/"scripts": {
     "start": "react-native start",
     "lint": "eslint --fix .",
     "build": "webpack",
-    "web": "webpack-dev-server --open --mode development"
+    "web": "webpack serve --open --mode development"
   }/sg' ./package.json
 
 # Webpack configuration
@@ -200,7 +200,7 @@ then
 }' > tsconfig.json
 
   # Install typescript dependencies
-  npm i -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader @typescript-eslint/parser @typescript-eslint/eslint-plugin
+  npm i -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader @typescript-eslint/parser @typescript-eslint/eslint-plugin @types/babel__core @types/babel__core
 
   # Update webpack config for ts files
   echo -e "/* eslint-disable @typescript-eslint/no-var-requires */\n$(cat webpack.config.js)" > ./webpack.config.js
@@ -390,10 +390,10 @@ then
   # Remove some rules from eslint
   perl -i -0pe "s#rules: \{(.*?)
   \}#rules: {
-    'no-use-before-define': 'off',
     '\@typescript-eslint/no-use-before-define': ['error'],
     '\@typescript-eslint/explicit-function-return-type': 'off',
-    '\@typescript-eslint/explicit-module-boundary-types': 'off'
+    '\@typescript-eslint/explicit-module-boundary-types': 'off',
+    '\@typescript-eslint/no-empty-function': 'off',
   }#sg" ./.eslintrc.js
 
   # Add typescript check on commit
@@ -412,19 +412,16 @@ fi
 
 # Add some rule to eslintrc
 npm i -D eslint-plugin-react-hooks
-  perl -i -0pe "s/plugins: \[(.*?)
-  \]/plugins: [\$1,
-    'react-hooks'
-  ]/sg" ./.eslintrc.js
-  perl -i -0pe "s#extends: \[(.*?)
-  \]#extends: [\$1,
-    'plugin:react-hooks/recommended''
-  ]#sg" ./.eslintrc.js
+perl -i -0pe "s/plugins: \[(.*?)
+\]/plugins: [\$1,
+  'react-hooks'
+]/sg" ./.eslintrc.js
+perl -i -0pe "s#extends: \[(.*?)
+\]#extends: [\$1,
+  'plugin:react-hooks/recommended'
+]#sg" ./.eslintrc.js
 perl -i -0pe "s#rules: \{(.*?)
   \}#rules: {\$1,
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/no-empty-function': 'off',
     'multiline-ternary': 'off',
     'no-use-before-define': 'off',
     'linebreak-style': ['error', 'unix'],
