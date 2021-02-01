@@ -411,9 +411,26 @@ then
 fi
 
 # Add some rule to eslintrc
+npm i -D eslint-plugin-react-hooks
+  perl -i -0pe "s/plugins: \[(.*?)
+  \]/plugins: [\$1,
+    'react-hooks'
+  ]/sg" ./.eslintrc.js
+  perl -i -0pe "s#extends: \[(.*?)
+  \]#extends: [\$1,
+    'plugin:react-hooks/recommended''
+  ]#sg" ./.eslintrc.js
 perl -i -0pe "s#rules: \{(.*?)
   \}#rules: {\$1,
-    'linebreak-style': ['error', 'unix']
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    'multiline-ternary': 'off',
+    'no-use-before-define': 'off',
+    'linebreak-style': ['error', 'unix'],
+    'brace-style': ['error', 'stroustrup', { allowSingleLine: true }],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'error'
   }#sg" ./.eslintrc.js
 
 rm -rf __tests__
