@@ -251,8 +251,7 @@ then
     # Fix ts config
     perl -i -0pe 's#// "outDir"#"outDir"#sg' ./tsconfig.json
     perl -i -0pe 's#// "declaration"#"declaration"#sg' ./tsconfig.json
-    perl -i -0pe "s#\{(.*)\"exclude\"(.*)\}#{\$1\"include\": [\"src/**/*\"],
-  \"exclude\": [\"node_modules\", \"dist\", \"demo\"]
+    perl -i -0pe "s#\{(.*)\"exclude\"(.*)\}#{\$1\"exclude\": [\"node_modules\", \"dist\", \"demo\"]
 }#s" ./tsconfig.json
 
     # Ignore demo folder
