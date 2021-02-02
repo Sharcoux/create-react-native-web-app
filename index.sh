@@ -139,18 +139,18 @@ then
   echo '{
   "compilerOptions": {
     /* Basic Options */
-    "target": "esnext" /* Specify ECMAScript target version: "ES3" (default), "ES5", "ES2015", "ES2016", "ES2017","ES2018" or "ESNEXT". */,
+    "target": "ES2016" /* Specify ECMAScript target version: "ES3" (default), "ES5", "ES2015", "ES2016", "ES2017","ES2018" or "ESNEXT". */,
     "module": "commonjs" /* Specify module code generation: "none", "commonjs", "amd", "system", "umd", "es2015", or "ESNext". */,
     "lib": [
-      "esnext",
+      "ES2016",
       "dom"
     ]                                         /* Specify library files to be included in the compilation. */,
-    // "allowJs": true,                       /* Allow javascript files to be compiled. */
+    "allowJs": true,                       /* Allow javascript files to be compiled. */
     // "checkJs": true,                       /* Report errors in .js files. */
     "jsx": "react"                            /* Specify JSX code generation: "preserve", "react-native", or "react". */,
     // "declaration": true,                   /* Generates corresponding ".d.ts" file. */
     // "declarationMap": true,                /* Generates a sourcemap for each corresponding ".d.ts" file. */
-    // "sourceMap": true,                     /* Generates corresponding ".map" file. */
+    "sourceMap": true,                     /* Generates corresponding ".map" file. */
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
     // "outDir": "./dist/",                   /* Redirect output structure to the directory. */
     // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
@@ -162,7 +162,7 @@ then
     // "isolatedModules": true,               /* Transpile each file as a separate module (similar to "ts.transpileModule"). */
     /* Strict Type-Checking Options */
     "strict": true                            /* Enable all strict type-checking options. */,
-    // "noImplicitAny": true,                 /* Raise error on expressions and declarations with an implied "any" type. */
+    "noImplicitAny": true,                 /* Raise error on expressions and declarations with an implied "any" type. */
     // "strictNullChecks": true,              /* Enable strict null checks. */
     // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
     // "strictBindCallApply": true,           /* Enable strict "bind", "call", and "apply" methods on functions. */
@@ -196,11 +196,13 @@ then
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
+  "include": ["src"],
   "exclude": ["node_modules"]
 }' > tsconfig.json
 
   # Install typescript dependencies
-  npm i -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader @typescript-eslint/parser @typescript-eslint/eslint-plugin @types/babel__core @types/babel__core
+  npm i -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader @typescript-eslint/parser @typescript-eslint/eslint-plugin @types/babel__core
+  npm remove -D babel-loader
 
   # Update webpack config for ts files
   echo -e "/* eslint-disable @typescript-eslint/no-var-requires */\n$(cat webpack.config.js)" > ./webpack.config.js
@@ -209,13 +211,6 @@ then
         test: /\\\.(tsx|ts|jsx|js|mjs)\\$/,
         exclude: /node_modules/,
         loader: 'ts-loader'
-      },
-      {
-        test: /\\\.(js|jsx)\\$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader'
-        }
       },
       {
         test: /\\\.html\\$/,
@@ -240,16 +235,15 @@ then
   if [ "$isModule" = 'y' ] || [ "$isModule" = 'yes' ]
   then
     # Add typescript precompiling
-    perl -i -0pe 's/"scripts": \{/"scripts": {
-    "prepare": "tsc",/sg' ./package.json
+    perl -i -0pe 's/"build": "webpack"/"build": "rm -rf dist && tsc"/sg' ./package.json
 
     # Fix entry point in package.json
     perl -i -0pe "s#\{(.*)
 \}#{\$1,
   \"main\": \"dist/index.js\",
-  \"types\": \"dist/index.d.ts\"
+  \"types\": \"dist/index.d.ts\",
+  \"files\": [\"src\", \"dist\"]
 }#sg" ./package.json
-
     
     # Fix Webpack config
     perl -i -0pe "s/'dist'/'demo'/sg" ./webpack.config.js
