@@ -387,7 +387,7 @@ then
     '\@typescript-eslint/no-use-before-define': ['error'],
     '\@typescript-eslint/explicit-function-return-type': 'off',
     '\@typescript-eslint/explicit-module-boundary-types': 'off',
-    '\@typescript-eslint/no-empty-function': 'off',
+    '\@typescript-eslint/no-empty-function': 'off'
   }#sg" ./.eslintrc.js
 
   # Add typescript check on commit
@@ -407,13 +407,13 @@ fi
 # Add some rule to eslintrc
 npm i -D eslint-plugin-react-hooks
 perl -i -0pe "s/plugins: \[(.*?)
-\]/plugins: [\$1,
-  'react-hooks'
-]/sg" ./.eslintrc.js
+  \]/plugins: [\$1,
+    'react-hooks'
+  ]/sg" ./.eslintrc.js
 perl -i -0pe "s#extends: \[(.*?)
-\]#extends: [\$1,
-  'plugin:react-hooks/recommended'
-]#sg" ./.eslintrc.js
+  \]#extends: [\$1,
+    'plugin:react-hooks/recommended'
+  ]#sg" ./.eslintrc.js
 perl -i -0pe "s#rules: \{(.*?)
   \}#rules: {\$1,
     'multiline-ternary': 'off',
