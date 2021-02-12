@@ -364,10 +364,12 @@ then
   ]#sg" ./.eslintrc.js
 
   # Add jest to package.json
-  perl -i -0pe "s/{(.*),/{\$1,
+  perl -i -0pe "s/(.*)
+  \"husky\": {/\$1
   \"jest\": {
     \"preset\": \"react-native-web\"
-  },/sg" ./package.json
+  },
+  \"husky\": {/sg" ./package.json
 fi
 
 # Add typescript to eslint
