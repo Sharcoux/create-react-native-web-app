@@ -3,6 +3,7 @@
 set -e
 
 npx -v > /dev/null 2>/dev/null || echo "You must install npx with `npm i -g npx`."
+yarn -v > /dev/null 2>/dev/null || echo "You must install npx with `npm i -g yarn`."
 perl -v > /dev/null 2>/dev/null || echo "You must install perl with `sudo apt install perl`."
 read -p "What is your project display name? " displayName
 read -p "What is your project package name? " name
@@ -13,8 +14,8 @@ cd $name
 git init
 
 # Install all dependencies
-npm i -S react-native-web react-dom --legacy-peer-deps
-npm i -D babel-loader html-loader html-webpack-plugin webpack webpack-cli webpack-dev-server dotenv husky lint-staged --legacy-peer-deps
+yarn add -S react-native-web react-dom
+yarn add -D babel-loader html-loader html-webpack-plugin webpack webpack-cli webpack-dev-server dotenv husky lint-staged
 
 # node dotenv
 echo "NODE_ENV=development" > .env
@@ -201,8 +202,8 @@ then
 }' > tsconfig.json
 
   # Install typescript dependencies
-  npm i -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader @typescript-eslint/parser @typescript-eslint/eslint-plugin @types/babel__core --legacy-peer-deps
-  npm remove -D babel-loader --legacy-peer-deps
+  yarn add -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader @typescript-eslint/parser @typescript-eslint/eslint-plugin @types/babel__core
+  yarn remove -D babel-loader
 
   # Update webpack config for ts files
   echo -e "/* eslint-disable @typescript-eslint/no-var-requires */\n$(cat webpack.config.js)" > ./webpack.config.js
@@ -276,7 +277,7 @@ perl -i -0pe 's/"jest": \{.*?\}/"husky": {
 read -p "Do you intend to use storybook for this project? (yN) " useStorybook
 if [ "$useStorybook" = 'y' ] || [ "$useStorybook" = 'yes' ]
 then
-  npm i -D @storybook/react --legacy-peer-deps
+  yarn add -D @storybook/react
   mkdir stories
   mkdir .storybook
 
@@ -289,7 +290,7 @@ then
   if [ "$useTS" = 'y' ] || [ "$useTS" = 'yes' ]
   then
     # We need to strip typescript off from the files with babel
-    npm i -D @babel/preset-typescript --legacy-peer-deps
+    yarn add -D @babel/preset-typescript
 
     # Load the files with babel
     echo "module.exports = {
@@ -336,18 +337,18 @@ fi
 read -p "Do you intend to use jest for this project? (yN) " useJest
 if [ "$useJest" = 'y' ] || [ "$useJest" = 'yes' ]
 then
-  npm i -D jest babel-jest ts-jest eslint-plugin-jest @types/jest --legacy-peer-deps
+  yarn add -D jest babel-jest ts-jest eslint-plugin-jest @types/jest
   mkdir tests
 
   # Add test script within package.json
   perl -i -0pe 's/"scripts": \{/"scripts": {
     "test": "jest",/sg' ./package.json
 else
-  npm remove jest babel-jest
+  yarn remove jest babel-jest
 fi
 
 # Setup eslint
-npm i -D eslint@latest
+yarn add -D eslint@latest
 rm .eslintrc.js
 npx eslint --init
 
@@ -406,7 +407,7 @@ then
 fi
 
 # Add some rule to eslintrc
-npm i -D eslint-plugin-react-hooks
+yarn add -D eslint-plugin-react-hooks
 perl -i -0pe "s/plugins: \[(.*?)
   \]/plugins: [\$1,
     'react-hooks'
