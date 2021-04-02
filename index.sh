@@ -13,8 +13,8 @@ cd $name
 git init
 
 # Install all dependencies
-npm i -S react-native-web react-dom
-npm i -D babel-loader html-loader html-webpack-plugin webpack webpack-cli webpack-dev-server dotenv husky lint-staged
+npm i -S react-native-web react-dom --legacy-peer-deps
+npm i -D babel-loader html-loader html-webpack-plugin webpack webpack-cli webpack-dev-server dotenv husky lint-staged --legacy-peer-deps
 
 # node dotenv
 echo "NODE_ENV=development" > .env
@@ -201,8 +201,8 @@ then
 }' > tsconfig.json
 
   # Install typescript dependencies
-  npm i -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader @typescript-eslint/parser @typescript-eslint/eslint-plugin @types/babel__core
-  npm remove -D babel-loader
+  npm i -D typescript @types/react @types/react-native react-native-typescript-transformer ts-loader @typescript-eslint/parser @typescript-eslint/eslint-plugin @types/babel__core --legacy-peer-deps
+  npm remove -D babel-loader --legacy-peer-deps
 
   # Update webpack config for ts files
   echo -e "/* eslint-disable @typescript-eslint/no-var-requires */\n$(cat webpack.config.js)" > ./webpack.config.js
@@ -276,7 +276,7 @@ perl -i -0pe 's/"jest": \{.*?\}/"husky": {
 read -p "Do you intend to use storybook for this project? (yN) " useStorybook
 if [ "$useStorybook" = 'y' ] || [ "$useStorybook" = 'yes' ]
 then
-  npm i -D @storybook/react
+  npm i -D @storybook/react --legacy-peer-deps
   mkdir stories
   mkdir .storybook
 
@@ -289,7 +289,7 @@ then
   if [ "$useTS" = 'y' ] || [ "$useTS" = 'yes' ]
   then
     # We need to strip typescript off from the files with babel
-    npm i -D @babel/preset-typescript
+    npm i -D @babel/preset-typescript --legacy-peer-deps
 
     # Load the files with babel
     echo "module.exports = {
@@ -336,7 +336,7 @@ fi
 read -p "Do you intend to use jest for this project? (yN) " useJest
 if [ "$useJest" = 'y' ] || [ "$useJest" = 'yes' ]
 then
-  npm i -D jest babel-jest ts-jest eslint-plugin-jest @types/jest
+  npm i -D jest babel-jest ts-jest eslint-plugin-jest @types/jest --legacy-peer-deps
   mkdir tests
 
   # Add test script within package.json
